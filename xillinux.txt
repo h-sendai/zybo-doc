@@ -5,53 +5,53 @@ http://qiita.com/kazuyamashi/items/b49df82dc8d868364d53
 http://xillybus.com/downloads/doc/xillybus_host_programming_guide_linux.pdf
 
 http://xillybus.com/xillinux
-����
+から
 http://xillybus.com/downloads/xillinux-eval-zybo-1.3c.zip
 http://xillybus.com/downloads/xillinux-1.3.img.gz
-�����������ɤ��롣
+をダウンロードする。
 
-xillinux-1.3.img.gz��gzip -d�ǿ�Ĺ����microSD�����ɤ�dd�ǽ񤯡�
+xillinux-1.3.img.gzをgzip -dで伸長してmicroSDカードにddで書く。
 
-xillinux-eval-zybo-1.3c.zip��Ÿ������xillydemo.bit���롣
-vivado��ɬ�ס���꤫����
+xillinux-eval-zybo-1.3c.zipを展開してxillydemo.bitを作る。
+vivadoが必要。作りかたは
 http://xillybus.com/downloads/doc/xillybus_getting_started_zynq.pdf
-��Getting started guide for zynq�˽񤤤Ƥ��롣
-vivado��ư����
+のGetting started guide for zynqに書いてある。
+vivadoを起動して
 run tcp script...
-��˥塼��
+メニューで
 xillinux-eval-zybo-1.3c/verilog/xillydemo-vivado.tcl
-����������餻�롣tcp console���֤�Project created: xillydemo
-�ȤǤ��OK��
-���Τ��Ⱥ�¦��˥塼����Generate Bitstream�򥯥�å����롣
-���ä������֤������ä�
+を選んで走らせる。tcp consoleタブでProject created: xillydemo
+とでればOK。
+そのあと左側メニューからGenerate Bitstreamをクリックする。
+けっこう時間がかかって
 xillinux-eval-zybo-1.3c/verilog/vivado/xillydemo.runs/impl_1/xillydemo.bit
-���Ǥ��롣xillydemo.bit��ɬ�פʥե����롣
+ができる。xillydemo.bitが必要なファイル。
 
-microSD�����ɤ�Linux��mount���롣
+microSDカードをLinuxでmountする。
 
 mount /dev/sdb1 /mnt
 ls /mnt
-�����uImage�ե����뤬���롣������xillydemo.bit��
+するとuImageファイルがある。ここにxillydemo.bitと
 xillinux-eval-zybo-1.3c/bootfiles/boot.bin
 xillinux-eval-zybo-1.3c/bootfiles/devicetree.dtb
-�ե�����򥳥ԡ����롣/mnt�ˤ��Թ�
+ファイルをコピーする。/mntには都合
 uImage
 boot.bin
 devicetree.dtb
 xillydemo.bit
-��4�ĤΥե����뤬������֤ˤʤ롣
+の4つのファイルがある状態になる。
 
-microSD�����ɤ�zybo�ˤ����ƥ֡��Ȥ��롣
-���ꥢ�륳�󥽡����¾��VGA�ˤ���Ϥ��졢autologin��root�Ǽ�ư��������
-���Ƥ�����֤ǵ�ư���롣
-VGA��ʸ��ü���ξ��֤ˤʤäƤ��롣GUI��ư����ˤ�
+microSDカードをzyboにさしてブートする。
+シリアルコンソールの他、VGAにも出力され、autologinでrootで自動ログイン
+している状態で起動する。
+VGAは文字端末の状態になっている。GUIを起動するには
 startx
-�����Ϥ��롣
-zybo�ˤ�USB�ݡ��Ȥ�1�Ĥ����ʤ��Τ�USB�����ܡ��ɡ�USB�ޥ�����Ʊ���˻Ȥ�
-�ˤ�USB�ϥ֤�ɬ�פˤʤ롣ȴ���������ơ���ߤ˻Ȥ��Ȥ������Ȥϲ�ǽ��
+と入力する。
+zyboにはUSBポートが1つしかないのでUSBキーボード、USBマウスを同時に使う
+にはUSBハブが必要になる。抜き差しして、交互に使うということは可能。
 
-OS��Ϣ��ubuntu�ʤΤǥͥåȥ���������/etc/network/interfaces�ե�����ǹԤ���
-static IP address�ʤ�lo���ɲä���
+OS関連はubuntuなのでネットワークの設定は/etc/network/interfacesファイルで行う。
+static IP addressならloに追加して
 
 # interfaces(5) file used by ifup(8) and ifdown(8)
 auto lo
@@ -65,7 +65,7 @@ broadcast 192.168.1.255
 # gateway 192.168.1.20
 # dns-nameservers 130.87.232.2
 # dns-search kek.jp
-�Ƚ񤯡�
+と書く。
 
 root@localhost:/etc/apt# uname -a
 Linux localhost.localdomain 3.12.0-xillinux-1.3 #1 SMP PREEMPT Thu Mar 13 18:39:32 IST 2014 armv7l armv7l armv7l GNU/Linux
@@ -129,10 +129,10 @@ eth0      Link encap:Ethernet  HWaddr 00:0a:35:00:01:22
           Interrupt:54 Base address:0xb000 
 
 http://keitetsu.blogspot.jp/2015/01/zyboubuntu.html
-�ʤɤ�ߤ��ubuntu 14.04�⤦�����Ƥ���ߤ�����
+などをみるとubuntu 14.04もうごいているみたい。
 
-root�Ǥ�autologin��
-/etc/init/tty[1-6].conf��ttyPS0.conf (console)�ǻ��ꤵ��Ƥ���:
+rootでのautologinは
+/etc/init/tty[1-6].confとttyPS0.conf (console)で指定されている:
 start on stopped rc RUNLEVEL=[2345] and (
             not-container or
             container CONTAINER=lxc or
@@ -143,10 +143,10 @@ stop on runlevel [!2345]
 respawn
 exec /sbin/getty -8 -a root 115200 ttyPS0 
 
--a root����ʬ��autologin�桼�����򼨤���
+-a rootの部分がautologinユーザーを示す。
 
-��ubuntu 12.04�ޥ����autologin�ʤ���tty1.conf�ϰʲ��ΤȤ����
-�ʤäƤ��롣
+別ubuntu 12.04マシンのautologinなしのtty1.confは以下のとおりに
+なっている。
 start on stopped rc RUNLEVEL=[2345] and (
             not-container or
             container CONTAINER=lxc or
@@ -157,24 +157,24 @@ stop on runlevel [!2345]
 respawn
 exec /sbin/getty -8 38400 tty1
 
-���󥿡��ͥåȤ���³����Ķ����Ѱդ����apt-get�ʤɤǤ���褦�ˤʤ롣
+インターネットに接続する環境を用意するとapt-getなどできるようになる。
 apt-get install openssh-server
-���Ƥ�����ssh�ǥ��������Ǥ���褦�ˤʤ롣
+しておくとsshでアクセスできるようになる。
 
-root�Υѥ���ɤ��դ��Ƥ��ʤ��Τ�console����autologin�������֤�
-passwd���ޥ�ɤǥѥ���ɤ��դ����¾PC����
+rootのパスワードは付いていないのでconsoleからautologinした状態で
+passwdコマンドでパスワードを付けると他PCから
 ssh root@192.168.1.123
-�ǥ�������Ǥ���褦�ˤʤ롣
+でログインできるようになる。
 
 /root/xillybus/demoapps
 
-���Ѱդ���Ƥ���ΤǤ�����make�����
+が用意されているのでここでmakeすると
 fifo
 memread
 memwrite
 streamread
 streamwrite
-���Ǥ��롣/dev/�ʲ��ˤ�
+ができる。/dev/以下には
 /dev/xillybus_audio
 /dev/xillybus_mem_8
 /dev/xillybus_read_32
@@ -182,26 +182,26 @@ streamwrite
 /dev/xillybus_smb
 /dev/xillybus_write_32
 /dev/xillybus_write_8
-�Ȥ����ǥХ����ե����뤬�Ǥ��Ƥ��롣���ޤ�FPGA�β�ϩ�����äƤ��ʤ�
-�ΤǤ��ɤ����ˤʤ롣
-ü����2�ĳ�����
-./streamread /dev/xillybus_read_32 (32bit�ǥ꡼��)
-���Ƥ⤦������ü����
+というデバイスファイルができている。いまはFPGAの回路が入っていない
+のですどおしになる。
+端末を2個開いて
+./streamread /dev/xillybus_read_32 (32bitでリード)
+してもう片方の端末で
 ./streamwrite /dev/xillybus_write_32
-�����ü���ɤߤ������֤ˤʤ롣Ŭ���˥����ܡ��ɤ���
-���Ϥ����streamread����ü�������Ϥ�ɽ������롣
-ARM -> FIFO -> FPGA��ϩ -> FIFO��ή��Ƥ���餷����
-32�ӥå��ɤߤ����Ȥ������Ȥǥ�����4�󲡤���streamread���Ƥ���ۤ���
-���Ϥ�ɽ������롣
+すると端末読みだし状態になる。適当にキーボードから
+入力するとstreamreadした端末に入力が表示される。
+ARM -> FIFO -> FPGA回路 -> FIFOと流れているらしい。
+32ビット読みだしということでキーを4回押すとstreamreadしているほうで
+入力が表示される。
 
-clock_gettime()�Ǥλ���μ���
-�����clock_gettime()�����ƻ����ץ��Ȥ����Ƥߤ�ȡ�
-clock_gettime()�Τ��Ӥ˿ʤ�Ǥ��������󤬤Ȥ��櫓�ǤϤʤ�
-���Ȥ��狼�ä���
-������󤬥��åץǡ��Ȥ����Τ�18904-18905�ʥ���(18.9�ޥ�������)
-�����Τ褦�ǡ����δ�clock_gettime()��29��30��ޤ�롣
+clock_gettime()での時刻の取得
+何回もclock_gettime()させて時刻をプリントさせてみると、
+clock_gettime()のたびに進んでいる時刻情報がとれるわけではない
+ことがわかった。
+時刻情報がアップデートされるのは18904-18905ナノ秒(18.9マイクロ秒)
+おきのようで、この間clock_gettime()は29〜30回まわる。
 
-ROOT�Υ���ѥ���
+ROOTのコンパイル
 
 g++  -Wall -fsigned-char -fPIC -Iinclude    -pthread -o cint/cintex/src/CINTFunctional.o -c /home/sendai/src/root/cint/cintex/src/CINTFunctional.cxx
 /tmp/ccoBuHHh.s: Assembler messages:
@@ -209,9 +209,9 @@ g++  -Wall -fsigned-char -fPIC -Iinclude    -pthread -o cint/cintex/src/CINTFunc
 /tmp/ccoBuHHh.s:5040: Error: r13 not allowed here -- `sub sp,fp,#4'
 make: *** [cint/cintex/src/CINTFunctional.o] Error 1
 
-�ǤȤޤ롣
+でとまる。
 https://root.cern.ch/phpBB3/viewtopic.php?t=19078
-��Ʊ�ͤ��ä����롣
-cintex��ɬ�פʤΤ�? ɬ�פʤ��ʤ�configure --disable-cintex�ǥ���ѥ���
-���ʤ��褦�ˤ��뤳�Ȥ�Ǥ���Ƚ񤤤Ƥ��롣
+に同様な話がある。
+cintexは必要なのか? 必要ないならconfigure --disable-cintexでコンパイル
+しないようにすることもできると書いてある。
 
